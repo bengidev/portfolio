@@ -22,8 +22,8 @@ export function SiteHeader() {
       )}
     >
       <div className="mx-auto flex h-12 max-w-3xl items-center gap-4 px-4">
-        <Link to="/" className="text-sm font-medium tracking-tight">
-          {site.name}
+        <Link to="/" className="text-sm font-semibold tracking-tight">
+          {site.displayName}
         </Link>
 
         <nav className="ml-auto flex items-center gap-1">

@@ -10,7 +10,7 @@ export function SiteFooter() {
     <footer className="border-t border-line">
       <div className="mx-auto flex max-w-3xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-6 text-sm text-muted-foreground">
         <span>
-          © {year} {site.name}
+          © {year} {site.displayName}
         </span>
 
         <ul className="flex items-center gap-3">

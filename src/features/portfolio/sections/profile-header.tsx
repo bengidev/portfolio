@@ -4,10 +4,11 @@ import { flipSentences, site } from '@/data/site'
 import { cn } from '@/lib/utils'
 
 /**
- * The hero: avatar, name, and a line that rotates through a few phrases.
+ * The hero: portrait, the BTRD wordmark, the full name beneath it, and a line
+ * that rotates through a few phrases.
  *
- * The avatar swaps with the colour scheme — put a different image in
- * `public/avatar-light.*` and `public/avatar-dark.*` if you want that.
+ * The portrait is a single file serving both themes — see the note on
+ * `avatarDark` in `src/data/site.ts`.
  */
 export function ProfileHeader() {
   return (
@@ -15,7 +16,7 @@ export function ProfileHeader() {
       <figure className="relative col-span-2 p-2 sm:col-span-1 sm:col-start-2 sm:p-4">
         <ProfileMark />
         <figcaption className="pointer-events-none absolute right-2 bottom-2 text-sm/none tracking-wide text-muted-foreground/60 tabular select-none sm:right-4 sm:bottom-4">
-          Fig. 1.
+          @{site.handle}
         </figcaption>
       </figure>
 
@@ -29,10 +30,13 @@ export function ProfileHeader() {
 
       <div className="flex flex-col">
         <div className="z-1 mt-auto border-t border-line">
-          <div className="flex -translate-x-px items-baseline gap-2 pl-4">
-            <h1 className="-translate-y-px text-[1.75rem]/none font-medium tracking-tight sm:text-[2rem]/none">
-              {site.name}
+          {/* Wordmark. `BTRD` carries the display weight; the full name sits
+              beneath it as a subordinate line so both are legible. */}
+          <div className="px-4 pt-3 pb-2">
+            <h1 className="font-heading text-[2.25rem]/none font-semibold tracking-[-0.02em]">
+              {site.displayName}
             </h1>
+            <p className="mt-1 text-sm tracking-tight text-muted-foreground">{site.name}</p>
           </div>
           <FlipSentences />
         </div>
@@ -124,8 +128,8 @@ function Avatar({ className }: { className?: string }) {
   if (broken) {
     return (
       <div className={cn(frame, 'flex items-center justify-center bg-muted select-none')}>
-        <span className="text-3xl font-medium text-muted-foreground">
-          {site.name.trim().charAt(0).toUpperCase() || '·'}
+        <span className="text-2xl font-semibold tracking-tight text-muted-foreground">
+          {site.displayName}
         </span>
         <div className="pointer-events-none absolute inset-0 rounded-[inherit] inset-ring-1 inset-ring-foreground/30 dark:inset-ring-foreground/10" />
       </div>
@@ -137,7 +141,7 @@ function Avatar({ className }: { className?: string }) {
       <img
         className="block size-full object-cover select-none dark:hidden"
         src={site.avatarLight}
-        alt={`${site.name} portrait`}
+        alt={`${site.name}, portrait`}
         width={512}
         height={512}
         onError={() => setBroken(true)}

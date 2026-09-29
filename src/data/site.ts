@@ -6,8 +6,16 @@
  */
 
 export const site = {
-  /** Full name. Used in the hero, the footer, and meta tags. */
+  /**
+   * Full name. Used in meta tags, the footer, and anywhere the name needs to
+   * be spelled out. Prefer `displayName` in visible UI.
+   */
   name: 'Bambang Tri Rahmat Doni',
+  /**
+   * Abbreviation, used as the wordmark in the hero and the header. Kept short
+   * so it holds its weight at display size.
+   */
+  displayName: 'BTRD',
   /** Short handle. Used for the GitHub panel and as the default monogram. */
   handle: 'bengidev',
 

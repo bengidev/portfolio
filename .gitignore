@@ -25,3 +25,6 @@ screenshot-*.png
 *.njsproj
 *.sln
 *.sw?
+
+# Viewport-only captures from ad-hoc checks
+hero-*.png

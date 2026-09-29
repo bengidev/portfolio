@@ -25,7 +25,7 @@ export function PageShell({
         className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-3.5" aria-hidden />
-        {site.name}
+        {site.displayName}
       </Link>
 
       <h1 className="text-3xl font-medium tracking-tight text-balance">{title}</h1>
