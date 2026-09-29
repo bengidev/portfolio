@@ -1,9 +1,9 @@
 /**
  * The ordered list of sections on the home page.
  *
- * Kept as data so the command palette and the header's "More" menu stay in
- * step with the page without either having to parse the other. If you add a
- * section, add it here too.
+ * Kept as data so the command palette stays in step with the page without
+ * having to parse it. The header has no section links, so this is the only
+ * consumer. If you add a section, add it here too.
  */
 export const sections = [
   { id: 'about', title: 'About' },
