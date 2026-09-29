@@ -7,8 +7,6 @@ import { cn } from '@/lib/utils'
 const NAV = [
   { to: '/', label: 'Home' },
   { to: '/projects', label: 'Projects' },
-  { to: '/blog', label: 'Writing' },
-  { to: '/components', label: 'Components' },
 ]
 
 /** Sticky top bar. Hidden on the home page, which is a single uninterrupted column. */

@@ -33,9 +33,6 @@ to be touched to update copy, links, jobs, or projects.
 | `src/data/education.ts`  | The education panel                       |
 | `src/data/projects.ts`   | The projects panel                        |
 | `src/data/recognition.ts`| Awards and certifications                 |
-| `src/data/testimonials.ts` | The quote carousel                      |
-| `src/data/sponsors.ts`   | Sponsor tiers and the marquee             |
-| `src/data/showcase.ts`   | Components, blocks, and blog cards        |
 
 ### Avatars
 
@@ -53,6 +50,12 @@ self-contained SVG. Swap it for your own mark, or replace it with an `<img>`.
 The home page is a plain list of components in `src/routes/home.tsx` — edit that
 array of elements to change the section order. `Separator` is the hatched gutter
 between panels.
+
+Current sections: hero, social rail, overview, GitHub contributions, about,
+stack, experience, education, projects, recognition.
+
+Routes live in `src/App.tsx`; navigation items live in `NAV` in
+`src/components/site-header.tsx`.
 
 ## Deploying to GitHub Pages
 
@@ -79,14 +82,14 @@ VITE_BASE_PATH=/ npm run build      # user/org site: bengidev.github.io
 
 If you rename the repo, update `DEFAULT_BASE` to match.
 
-### Deep links
+Deep links
 
-GitHub Pages has no rewrite rules, so a direct hit on `/portfolio/blog` would
-normally 404. `scripts/postbuild.mjs` copies the built `index.html` to
+GitHub Pages has no rewrite rules, so a direct hit on `/portfolio/projects`
+would normally 404. `scripts/postbuild.mjs` copies the built `index.html` to
 `404.html`, which Pages serves for unmatched paths; the router then renders the
 right route. This works because Vite emits absolute asset URLs under `base`.
 
-Verified against `/`, `/blog`, `/components/:slug`, and unknown paths.
+Verified against `/`, `/projects`, and unknown paths.
 
 ### Custom domain
 

@@ -8,11 +8,7 @@ import { ProfileHeader } from '@/features/portfolio/sections/profile-header'
 import { Projects } from '@/features/portfolio/sections/projects'
 import { Recognition } from '@/features/portfolio/sections/recognition'
 import { SocialLinks } from '@/features/portfolio/sections/social-links'
-import { Blog, Blocks, Components } from '@/features/portfolio/sections/showcase'
-import { Sponsors } from '@/features/portfolio/sections/sponsors'
-import { SponsorsCarousel } from '@/features/portfolio/sections/sponsors-carousel'
 import { TechStack } from '@/features/portfolio/sections/tech-stack'
-import { Testimonials } from '@/features/portfolio/sections/testimonials'
 
 /**
  * The home page is one narrow column of stacked panels separated by hatched
@@ -31,17 +27,6 @@ export function Home() {
       <Separator />
 
       <About />
-      <SponsorsCarousel />
-      <Testimonials />
-      <Separator />
-
-      <Components />
-      <Separator />
-
-      <Blocks />
-      <Separator />
-
-      <Blog />
       <Separator />
 
       <TechStack />
@@ -57,9 +42,6 @@ export function Home() {
       <Separator />
 
       <Recognition />
-      <Separator />
-
-      <Sponsors />
     </main>
   )
 }
