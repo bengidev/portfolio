@@ -1,5 +1,7 @@
 export interface Experience {
   company: string
+  /** The position held, e.g. "Frontend Engineer". */
+  role: string
   href?: string
   location: string
   locationType?: 'Remote' | 'Hybrid' | 'On-site'
@@ -15,6 +17,7 @@ export interface Experience {
 export const experiences: Experience[] = [
   {
     company: 'Your Company',
+    role: 'Frontend Engineer',
     href: 'https://example.com',
     location: 'Melbourne, Australia',
     locationType: 'Remote',
@@ -29,6 +32,7 @@ export const experiences: Experience[] = [
   },
   {
     company: 'Previous Company',
+    role: 'Full-stack Developer',
     location: 'Remote',
     locationType: 'Remote',
     status: 'Past',
@@ -41,6 +45,7 @@ export const experiences: Experience[] = [
   },
   {
     company: 'First Company',
+    role: 'Junior Developer',
     location: 'Your City',
     locationType: 'On-site',
     status: 'Past',
