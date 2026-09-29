@@ -1,37 +1,36 @@
-import { Panel, PanelContent, PanelHeader, PanelTitle } from '@/components/panel'
+import { Section } from '@/components/section'
 import { about } from '@/data/about'
 
-/** Bulleted intro. `*emphasis*` inside a string renders bold. */
-export function About() {
-  return (
-    <Panel>
-      <PanelHeader>
-        <PanelTitle>About</PanelTitle>
-      </PanelHeader>
-      <PanelContent>
-        <ul className="space-y-2 text-base text-balance">
-          {about.map((item) => (
-            <li key={item} className="flex gap-3">
-              <span aria-hidden className="mt-2.5 size-1 shrink-0 rounded-full bg-border" />
-              <span className="text-muted-foreground">{renderEmphasis(item)}</span>
-            </li>
-          ))}
-        </ul>
-      </PanelContent>
-    </Panel>
-  )
-}
-
-/** Minimal inline `*bold*` support so the copy file stays readable. */
-function renderEmphasis(text: string) {
-  const parts = text.split(/(\*[^*]+\*)/g)
-  return parts.map((part, i) =>
+/**
+ * Renders `*asterisked*` spans as bold. Keeps the copy in `src/data` as
+ * plain strings rather than markup, so the data file stays portable.
+ */
+function withEmphasis(text: string) {
+  return text.split(/(\*[^*]+\*)/g).map((part, index) =>
     part.startsWith('*') && part.endsWith('*') && part.length > 2 ? (
-      <strong key={i} className="font-medium text-foreground">
+      <strong key={index} className="font-semibold text-foreground">
         {part.slice(1, -1)}
       </strong>
     ) : (
       part
     ),
+  )
+}
+
+export function About() {
+  return (
+    <Section id="about" title="About">
+      <ul className="space-y-3">
+        {about.map((item, index) => (
+          <li
+            key={index}
+            className="flex gap-3 font-mono text-sm leading-relaxed text-balance text-foreground"
+          >
+            <span className="mt-2 size-1 shrink-0 rounded-full bg-muted-foreground" aria-hidden />
+            <span className="min-w-0">{withEmphasis(item)}</span>
+          </li>
+        ))}
+      </ul>
+    </Section>
   )
 }
