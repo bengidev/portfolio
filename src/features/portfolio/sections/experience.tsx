@@ -18,7 +18,7 @@ export function Experience() {
                   href={experience.href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="underline decoration-transparent underline-offset-4 transition-colors hover:decoration-current"
+                  className="underline decoration-transparent underline-offset-4 transition-colors duration-150 ease-out-expo hover:decoration-current"
                 >
                   {experience.company}
                 </a>

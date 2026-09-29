@@ -114,7 +114,7 @@ export function GitHubActivity() {
           href={`https://github.com/${data.login}`}
           target="_blank"
           rel="noreferrer noopener me"
-          className="flex shrink-0 items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+          className="flex shrink-0 items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors duration-150 ease-out-expo hover:text-foreground"
         >
           @{data.login} →
         </a>

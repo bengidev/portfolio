@@ -38,7 +38,7 @@ export function Profile() {
       {/* Portrait. Takes a third of the width on small screens so the
           name and role still get a full line each. */}
       <div className="w-[38%] shrink-0 sm:size-32">
-        <div className="aspect-square w-full rounded-xl border border-border p-1 transition duration-300 hover:brightness-90">
+        <div className="aspect-square w-full rounded-xl border border-border p-1 transition-[filter] duration-200 ease-out-expo hover:brightness-90 motion-reduce:transition-none">
           <img
             src={site.avatar}
             alt={`${site.name}'s portrait`}
@@ -55,7 +55,7 @@ export function Profile() {
             href={`https://github.com/${site.handle}`}
             target="_blank"
             rel="noreferrer noopener me"
-            className="truncate font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+            className="truncate font-mono text-xs text-muted-foreground transition-colors duration-150 ease-out-expo hover:text-foreground"
           >
             @{site.handle}
           </a>
