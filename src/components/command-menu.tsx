@@ -196,14 +196,14 @@ export function CommandMenu() {
         type="button"
         aria-label="Close search"
         onClick={close}
-        className="absolute inset-0 cursor-default bg-black/40 backdrop-blur-[2px]"
+        className="enter-fade absolute inset-0 cursor-default bg-black/40 backdrop-blur-[2px]"
       />
 
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Search"
-        className="animate-in fade-in-0 zoom-in-95 relative w-full max-w-lg overflow-hidden rounded-lg border border-border bg-popover shadow-2xl"
+        className="enter-fade relative w-full max-w-lg overflow-hidden rounded-lg border border-border bg-popover shadow-2xl"
       >
         <div className="flex items-center gap-2 border-b border-border px-3">
           <Search className="size-4 shrink-0 text-muted-foreground" aria-hidden />
@@ -246,7 +246,7 @@ export function CommandMenu() {
                         requestAnimationFrame(command.run)
                       }}
                       className={cn(
-                        'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors',
+                        'flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors duration-150 ease-out-expo active:duration-75',
                         isActive ? 'bg-accent text-accent-foreground' : 'text-foreground',
                       )}
                     >
@@ -291,7 +291,7 @@ export function CommandMenuButton({ className }: { className?: string }) {
       aria-label="Search"
       aria-expanded={open}
       className={cn(
-        'inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-input bg-background px-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent',
+        'pressable inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-input bg-background px-2.5 text-sm text-muted-foreground hover:bg-accent',
         className,
       )}
     >
