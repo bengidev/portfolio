@@ -6,122 +6,110 @@
 /* ------------------------------------------------------------------ *
  * Theme tokens
  *
- * A deliberately monochrome, ink-on-paper palette. Everything is defined
- * as a near-neutral ramp so individual components can tint one axis
- * (see `--link`) without disturbing the rest of the system.
+ * A blueprint palette: a hairline grid drawn on a near-white sheet in
+ * light mode and near-black in dark. Almost everything is a step on the
+ * zinc ramp, so the only saturated colour on the page is the small blue
+ * "verified" badge.
+ *
+ * The vertical rules that frame the page are drawn one step softer than
+ * the horizontal hairlines (`--edge` vs `--border`) so the two do not
+ * compete for attention.
  * ------------------------------------------------------------------ */
 :root {
-  --radius: 0.625rem;
+  --radius: 0.5rem;
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
+  --background: #ffffff;
+  --foreground: #09090b;
 
-  --primary: oklch(0.141 0.005 285.823);
-  --primary-foreground: oklch(0.985 0 0);
+  --card: #ffffff;
+  --card-foreground: var(--foreground);
 
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --popover: #ffffff;
+  --popover-foreground: var(--foreground);
 
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #a1a1aa;
 
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
+  /* Vertical rules: softer than --border so the frame recedes. */
+  --edge: color-mix(in oklab, var(--border) 64%, var(--background));
 
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
+  /* The single accent on the page. */
+  --info: #2563eb;
 
-  /* Softer than --border: used for the interior rules that divide a panel
-     into sub-sections, where a full-contrast line would feel heavy. */
-  --line: color-mix(in oklab, var(--border) 64%, var(--background));
-
-  --link: oklch(0.488 0.243 264.376);
-  --surface: oklch(0.985 0 0);
-  --surface-foreground: oklch(0.141 0.005 285.823);
-
-  --selection: oklch(0.141 0.005 285.823);
-  --selection-foreground: oklch(0.985 0 0);
+  --selection: #18181b;
+  --selection-foreground: #fafafa;
 
   /* Contribution-graph ramp, lightest → darkest. */
-  --chart-1: oklch(0.92 0.004 286.32);
-  --chart-2: oklch(0.78 0.01 286);
-  --chart-3: oklch(0.62 0.014 286);
-  --chart-4: oklch(0.44 0.012 286);
-  --chart-5: oklch(0.274 0.006 286.033);
+  --chart-0: #f4f4f5;
+  --chart-1: #e4e4e7;
+  --chart-2: #d4d4d8;
+  --chart-3: #a1a1aa;
+  --chart-4: #52525b;
+  --chart-5: #18181b;
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
+  --background: #09090b;
+  --foreground: #fafafa;
 
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.141 0.005 285.823);
+  --card: #111113;
+  --card-foreground: var(--foreground);
 
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
+  --popover: #111113;
+  --popover-foreground: var(--foreground);
 
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
+  --muted: #1c1c1e;
+  --muted-foreground: #a1a1aa;
 
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
+  --accent: #1c1c1e;
+  --accent-foreground: #fafafa;
 
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #52525b;
 
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
+  --edge: #1c1c1e;
 
-  --border: oklch(0.274 0.006 286.033);
-  --input: oklch(0.274 0.006 286.033);
-  --ring: oklch(0.552 0.016 285.938);
+  --info: #60a5fa;
 
-  --link: oklch(0.623 0.214 259.815);
-  --surface: oklch(0.21 0.006 285.885);
-  --surface-foreground: oklch(0.985 0 0);
+  --selection: #fafafa;
+  --selection-foreground: #09090b;
 
-  --selection: oklch(0.985 0 0);
-  --selection-foreground: oklch(0.141 0.005 285.823);
-
-  --chart-1: oklch(0.274 0.006 286.033);
-  --chart-2: oklch(0.35 0.01 286);
-  --chart-3: oklch(0.45 0.012 286);
-  --chart-4: oklch(0.58 0.012 286);
-  --chart-5: oklch(0.705 0.015 286.067);
+  --chart-0: #18181b;
+  --chart-1: #27272a;
+  --chart-2: #3f3f46;
+  --chart-3: #71717a;
+  --chart-4: #a1a1aa;
+  --chart-5: #e4e4e7;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
-  --color-line: var(--line);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-link: var(--link);
-  --color-surface: var(--surface);
-  --color-surface-foreground: var(--surface-foreground);
+  --color-edge: var(--edge);
+  --color-info: var(--info);
   --color-selection: var(--selection);
   --color-selection-foreground: var(--selection-foreground);
 
+  --color-chart-0: var(--chart-0);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -130,25 +118,15 @@
 
   --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, monospace;
-  --font-heading: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-pixel: 'Geist Pixel Variable', 'Geist Mono Variable', ui-monospace, monospace;
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: calc(var(--radius) - 1px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 2px);
 
-  /* Paper texture for the gap between panels. */
-  --animate-marquee: marquee var(--duration, 40s) linear infinite;
-}
-
-@keyframes marquee {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    /* The track holds exactly two identical rows, so -50% is one row width. */
-    transform: translateX(-50%);
-  }
+  /* The single column every section is measured against. */
+  --container-page: 48rem;
 }
 
 @layer base {
@@ -159,6 +137,8 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* Section anchors clear the sticky header. */
+    scroll-padding-top: 5rem;
   }
 
   body {
@@ -176,55 +156,105 @@
   :focus-visible {
     @apply outline-ring outline-2 outline-offset-2;
   }
+
+  /* The pixel face reads better slightly heavier and tighter. */
+  .font-pixel {
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
 }
 
 /* ------------------------------------------------------------------ *
- * Layout utilities
+ * The blueprint frame
  *
- * The page is a single narrow column, but the rules that frame it run
- * edge to edge across the viewport. Each is drawn by a pseudo-element
- * that is 200vw wide and pulled back 100vw, so one column of markup
- * produces a full-bleed hairline regardless of how wide the window is.
+ * The page is one narrow column, but the rules framing it behave
+ * differently: the vertical rules sit on the column's own edges and run
+ * the full height of the document, while the horizontal hairlines run
+ * edge to edge across the viewport.
+ *
+ * Each full-bleed line is centred on its parent and one viewport wide.
+ * The parent is always the centred column, so "centred on the parent" and
+ * "spanning the viewport" are the same thing — and unlike a `-100vw / 200vw`
+ * pair, it does not overshoot by the horizontal gutter.
  * ------------------------------------------------------------------ */
-@utility screen-line-top {
+@utility screen-line-before {
   @apply relative;
 
   &::before {
     content: '';
-    @apply bg-line absolute top-0 -left-[100vw] -z-1 h-px w-[200vw];
+    @apply bg-edge absolute top-0 left-1/2 -z-1 h-px w-screen -translate-x-1/2;
   }
 }
 
-@utility screen-line-bottom {
+@utility screen-line-after {
   @apply relative;
 
   &::after {
     content: '';
-    @apply bg-line absolute bottom-0 -left-[100vw] -z-1 h-px w-[200vw];
+    @apply bg-edge absolute bottom-0 left-1/2 -z-1 h-px w-screen -translate-x-1/2;
   }
 }
 
-@utility screen-line-bottom-border {
-  &::after {
-    background-color: var(--border);
-  }
+/* Vertical frame: two rules running the full height of the page. */
+@utility edge-frame {
+  @apply border-x border-edge;
 }
 
-/* Fine diagonal hatching used as the gutter between stacked panels. */
-@utility stripe-divider {
-  background-image: repeating-linear-gradient(
-    -45deg,
-    var(--line) 0 1px,
-    transparent 1px 5px
+/**
+ * Dotted field used for the banner and the closing block. A 10px tile of
+ * 1px dots reads as printed paper rather than a UI texture.
+ */
+@utility dot-pattern {
+  background-image: radial-gradient(
+    color-mix(in oklab, var(--muted-foreground) 60%, transparent) 1px,
+    transparent 0
   );
+  background-size: 10px 10px;
+  background-position: center;
 }
 
-@utility link {
-  @apply text-link underline decoration-1 underline-offset-3 hover:underline;
+/**
+ * The diagonal hatch that separates sections. `-z-1` lets it sit behind
+ * the section content while still spanning the full viewport width.
+ */
+@utility hatch-divider {
+  @apply relative flex h-6 w-full shrink-0;
+
+  &::before {
+    content: '';
+    @apply absolute left-1/2 -z-1 h-full w-screen -translate-x-1/2;
+    background-image: repeating-linear-gradient(
+      315deg,
+      color-mix(in oklab, var(--edge) 55%, transparent) 0 1px,
+      transparent 1px 6px
+    );
+  }
 }
 
-@utility link-underline {
-  @apply underline decoration-current/30 decoration-1 underline-offset-3 transition-colors hover:decoration-current;
+/** Section heading in the pixel face. */
+@utility section-title {
+  @apply font-pixel text-2xl font-semibold sm:text-3xl;
+}
+
+/**
+ * Entry animation for the rotating line under the name. Each change swaps
+ * the element's `key`, which restarts the animation.
+ */
+@keyframes flip-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@utility animate-flip-in {
+  animation: flip-in 0.45s ease-out both;
 }
 
 @utility tabular {
