@@ -1,7 +1,9 @@
 import { useMemo } from 'react'
 
-import { Panel, PanelContent, PanelHeader, PanelTitle } from '@/components/panel'
+import { Section } from '@/components/section'
 import { cn } from '@/lib/utils'
+
+import contributions from '@/data/contributions.json'
 
 /**
  * The year-long contribution calendar.
@@ -29,8 +31,6 @@ interface Contributions {
   weeks: { firstDay: string; days: Day[] }[]
   fetchedAt: string
 }
-
-import contributions from '@/data/contributions.json'
 
 const LEVELS = [
   'bg-chart-1', // 0
@@ -63,7 +63,7 @@ function formatDate(iso: string | null) {
 /** Pitch of one grid column: a 10px cell (`size-2.5`) plus a 3px gap. */
 const COL = 13
 
-export function GitHubPanel() {
+export function GitHubActivity() {
   const data = contributions as unknown as Contributions
 
   const { weeks, monthLabels } = useMemo(() => {
@@ -103,118 +103,108 @@ export function GitHubPanel() {
   }, [data.weeks])
 
   const hasData = weeks.length > 0
+  const year = data.lastDate ? new Date(`${data.lastDate}T00:00:00Z`).getUTCFullYear() : null
 
   return (
-    <Panel>
-      <PanelHeader>
-        <PanelTitle>GitHub</PanelTitle>
+    <Section
+      id="activity"
+      title="GitHub Activity"
+      action={
         <a
           href={`https://github.com/${data.login}`}
           target="_blank"
           rel="noreferrer noopener me"
-          className="ml-auto text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="flex shrink-0 items-center gap-1.5 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           @{data.login} →
         </a>
-      </PanelHeader>
+      }
+    >
+      {hasData ? (
+        <div className="overflow-x-auto pb-1">
+          <div className="min-w-max">
+            {/* Month labels, positioned over the column each month starts in. */}
+            <div className="relative mb-2 ml-9 h-4" aria-hidden>
+              {monthLabels.map((label) => (
+                <span
+                  key={`${label.text}-${label.index}`}
+                  className="absolute font-mono text-xs text-muted-foreground"
+                  style={{ left: label.index * COL }}
+                >
+                  {label.text}
+                </span>
+              ))}
+            </div>
 
-      <PanelContent>
-        {hasData ? (
-          <div className="overflow-x-auto pb-1">
-            <div className="min-w-max">
-              {/* Month labels, positioned over the column each month starts in. */}
-              <div className="relative mb-2 ml-9 h-4" aria-hidden>
-                {monthLabels.map((label) => (
+            <div className="flex gap-2">
+              {/* Day-of-week labels down the left edge. */}
+              <div className="grid w-7 shrink-0 grid-rows-7 gap-[3px]" aria-hidden>
+                {DAY_LABELS.map((label, i) => (
                   <span
-                    key={`${label.text}-${label.index}`}
-                    className="absolute text-xs text-muted-foreground"
-                    style={{ left: label.index * COL }}
+                    key={i}
+                    className="font-mono text-xs leading-none text-muted-foreground"
                   >
-                    {label.text}
+                    {label}
                   </span>
                 ))}
               </div>
 
-              <div className="flex gap-2">
-                {/* Day-of-week labels down the left edge. */}
-                <div className="grid w-7 shrink-0 grid-rows-7 gap-[3px]" aria-hidden>
-                  {DAY_LABELS.map((label, i) => (
-                    <span key={i} className="text-xs leading-none text-muted-foreground">
-                      {label}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="grid grid-flow-col grid-rows-7 gap-[3px]">
-                  {weeks.flatMap((week, wi) =>
-                    week.days.map((day) => (
-                      <div
-                        key={`${day.date}-${wi}`}
-                        title={`${day.contributionCount} contribution${
-                          day.contributionCount === 1 ? '' : 's'
-                        } on ${day.date}`}
-                        className={cn(
-                          'size-2.5 rounded-[2px]',
-                          LEVELS[levelOf(day.contributionCount)],
-                        )}
-                      />
-                    )),
-                  )}
-                </div>
+              <div className="grid grid-flow-col grid-rows-7 gap-[3px]">
+                {weeks.flatMap((week, wi) =>
+                  week.days.map((day) => (
+                    <div
+                      key={`${day.date}-${wi}`}
+                      title={`${day.contributionCount} contribution${
+                        day.contributionCount === 1 ? '' : 's'
+                      } on ${day.date}`}
+                      className={cn('size-2.5 rounded-[2px]', LEVELS[levelOf(day.contributionCount)])}
+                    />
+                  )),
+                )}
               </div>
             </div>
-
-            {/* Caption and legend. */}
-            <div className="mt-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 text-sm">
-              <p className="text-muted-foreground">
-                Fig. 2.{' '}
-                <span className="text-foreground tabular">
-                  {data.totalContributions.toLocaleString()} contributions
-                </span>
-                , {formatDate(data.firstDate)} – {formatDate(data.lastDate)}. Source:{' '}
-                <a
-                  href={`https://github.com/${data.login}`}
-                  target="_blank"
-                  rel="noreferrer noopener me"
-                  className="link-underline"
-                >
-                  GitHub
-                </a>
-                .
-              </p>
-
-              <p className="flex items-center gap-1.5 text-muted-foreground" aria-hidden>
-                Less
-                {LEVELS.map((level, i) => (
-                  <span key={i} className={cn('size-2.5 rounded-[2px]', level)} />
-                ))}
-                More
-              </p>
-            </div>
           </div>
-        ) : (
-          <EmptyCalendar login={data.login} />
-        )}
-      </PanelContent>
-    </Panel>
+
+          {/* Count and legend. */}
+          <div className="mt-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 font-mono text-xs">
+            <p className="text-muted-foreground">
+              <span className="tabular text-foreground">
+                {data.totalContributions.toLocaleString('en-US')}
+              </span>{' '}
+              contributions
+              {year ? ` in ${year}` : ''} · {formatDate(data.firstDate)} –{' '}
+              {formatDate(data.lastDate)}
+            </p>
+
+            <p className="flex items-center gap-1.5 text-muted-foreground" aria-hidden>
+              Less
+              {LEVELS.map((level, i) => (
+                <span key={i} className={cn('size-2.5 rounded-[2px]', level)} />
+              ))}
+              More
+            </p>
+          </div>
+        </div>
+      ) : (
+        <EmptyCalendar login={data.login} />
+      )}
+    </Section>
   )
 }
 
 function EmptyCalendar({ login }: { login: string }) {
   return (
-    <div className="text-sm text-muted-foreground">
+    <div className="font-mono text-xs leading-relaxed text-muted-foreground">
       <p>
-        The contribution calendar needs a{' '}
-        <code className="font-mono text-xs">GITHUB_TOKEN</code> secret with{' '}
-        <code className="font-mono text-xs">read:user</code> scope in the repository, then a
-        rebuild. Add it under{' '}
-        <em>Settings → Secrets and variables → Actions</em> and push.
+        The contribution calendar needs a <code className="text-foreground">GITHUB_TOKEN</code>{' '}
+        secret with <code className="text-foreground">read:user</code> scope in the repository,
+        then a rebuild. Add it under <em>Settings → Secrets and variables → Actions</em> and push.
       </p>
       <a
         href={`https://github.com/${login}`}
         target="_blank"
         rel="noreferrer noopener me"
-        className="link-underline mt-2 inline-block"
+        className="mt-2 inline-block text-foreground underline underline-offset-4 hover:decoration-current"
       >
         View @{login} on GitHub instead →
       </a>
