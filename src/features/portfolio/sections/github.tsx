@@ -60,29 +60,44 @@ function formatDate(iso: string | null) {
   return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`
 }
 
+/** Pitch of one grid column: a 10px cell (`size-2.5`) plus a 3px gap. */
+const COL = 13
+
 export function GitHubPanel() {
   const data = contributions as unknown as Contributions
 
   const { weeks, monthLabels } = useMemo(() => {
     const source = data.weeks
-    const labels: { index: number; text: string }[] = []
-    if (!source.length) return { weeks: source, monthLabels: labels }
+    if (!source.length) return { weeks: source, monthLabels: [] as { index: number; text: string }[] }
 
-    // Label a month at the first column whose week contains its 1st or later,
-    // skipping a label that would collide with the previous one.
-    let lastMonth = -1
+    // One label per month. A month starts at the first week whose first day
+    // falls in a later month than the previous week's. When two labels would
+    // sit too close, nudge forward *within the same month* rather than
+    // dropping the label — dropping it loses the end of the year.
+    const labels: { index: number; text: string }[] = []
     let lastIndex = -Infinity
 
-    source.forEach((week, index) => {
-      const first = week.days[0]
-      if (!first) return
-      const month = new Date(`${first.date}T00:00:00Z`).getUTCMonth()
-      if (month !== lastMonth && index - lastIndex >= 3) {
-        labels.push({ index, text: MONTHS[month] })
-        lastMonth = month
-        lastIndex = index
+    for (let i = 1; i < source.length; i++) {
+      const prev = source[i - 1].days[0]
+      const cur = source[i].days[0]
+      if (!prev || !cur) continue
+
+      const monthOf = (d: { date: string }) => new Date(`${d.date}T00:00:00Z`).getUTCMonth()
+      const month = monthOf(cur)
+      if (monthOf(prev) === month) continue // same month as the week before
+
+      // Nudge forward a column or two to keep the labels legible.
+      let at = i
+      while (at + 1 < source.length && at - lastIndex < 2) {
+        const next = source[at + 1].days[0]
+        if (!next || monthOf(next) !== month) break // ran out of this month
+        at++
       }
-    })
+      if (at - lastIndex < 2) continue // no room anywhere left
+
+      labels.push({ index: at, text: MONTHS[month] })
+      lastIndex = at
+    }
 
     return { weeks: source, monthLabels: labels }
   }, [data.weeks])
@@ -113,7 +128,7 @@ export function GitHubPanel() {
                   <span
                     key={`${label.text}-${label.index}`}
                     className="absolute text-xs text-muted-foreground"
-                    style={{ left: `calc(${label.index} * 13px + ${label.index} * 3px)` }}
+                    style={{ left: label.index * COL }}
                   >
                     {label.text}
                   </span>
