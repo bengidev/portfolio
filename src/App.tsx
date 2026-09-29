@@ -1,70 +1,41 @@
 import { Link, Route, Routes } from 'react-router-dom'
 
-import { PageShell, StubPage } from '@/routes/page-shell'
-import { projects } from '@/data/projects'
+import { Section } from '@/components/section'
+import { site } from '@/data/site'
 import { Home } from '@/routes/home'
 
+/**
+ * The site is a single page. The only other route is the 404, which the
+ * `404.html` copy of the built index resolves any unknown path to — see
+ * `scripts/postbuild.mjs`.
+ */
 export function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-
-      <Route
-        path="/projects"
-        element={
-          <StubPage
-            title="Projects"
-            description="Things I have built, and why."
-            items={projects.map((project) => ({
-              name: project.title,
-              description: project.summary,
-            }))}
-          />
-        }
-      />
-
-      <Route path="/follow" element={<FollowPage />} />
-      <Route path="/colophon" element={<Colophon />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }
 
-function FollowPage() {
-  return (
-    <PageShell
-      title="Follow"
-      description="Where to find me. The links are the same ones in the header."
-    >
-      <p className="text-sm text-muted-foreground">
-        Social handles live in <code className="font-mono text-xs">src/data/site.ts</code>.
-      </p>
-    </PageShell>
-  )
-}
-
-function Colophon() {
-  return (
-    <PageShell title="Colophon" description="How this site is built.">
-      <ul className="space-y-2 text-sm text-muted-foreground">
-        <li>React 19 + Vite, deployed as a static bundle.</li>
-        <li>Tailwind CSS v4 with a custom monochrome token set.</li>
-        <li>
-          TypeScript throughout; all copy lives in{' '}
-          <code className="font-mono text-xs">src/data/</code>.
-        </li>
-        <li>Published to GitHub Pages on every push to the default branch.</li>
-      </ul>
-    </PageShell>
-  )
-}
-
 function NotFound() {
   return (
-    <PageShell title="404" description="That page does not exist.">
-      <Link to="/" className="link-underline text-sm">
-        Back to the home page
-      </Link>
-    </PageShell>
+    <main className="max-w-screen overflow-x-hidden px-2">
+      <div className="mx-auto max-w-3xl">
+        <div className="screen-line-before screen-line-after edge-frame">
+          <Section id="not-found" title="404">
+            <p className="font-mono text-sm text-muted-foreground">
+              That page does not exist. The whole site lives on one page, so try the home page.
+            </p>
+            <Link
+              to="/"
+              className="mt-4 inline-block rounded-full border border-border px-3.5 py-1.5 font-mono text-sm transition-colors hover:bg-accent"
+            >
+              ← {site.displayName}
+            </Link>
+          </Section>
+        </div>
+      </div>
+    </main>
   )
 }
