@@ -29,7 +29,7 @@ function NotFound() {
             </p>
             <Link
               to="/"
-              className="mt-4 inline-block rounded-full border border-border px-3.5 py-1.5 font-mono text-sm transition-colors hover:bg-accent"
+              className="pressable mt-4 inline-block rounded-md border border-border px-3.5 py-1.5 font-mono text-sm hover:bg-accent"
             >
               ← {site.displayName}
             </Link>

@@ -19,7 +19,7 @@ export function Stack() {
                     href={item.href}
                     target="_blank"
                     rel="noreferrer noopener"
-                    className="inline-block rounded-md border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground transition-colors hover:border-foreground/30 hover:text-foreground"
+                    className="pressable inline-block rounded-md border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground hover:border-foreground/30 hover:text-foreground"
                   >
                     {item.name}
                   </a>

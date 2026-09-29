@@ -18,7 +18,7 @@ export function Projects() {
                   target="_blank"
                   rel="noreferrer noopener"
                   aria-label={`Open ${project.title}`}
-                  className="transition-colors hover:text-foreground"
+                  className="pressable grid size-7 place-items-center rounded-md hover:bg-accent hover:text-foreground"
                 >
                   <ArrowUpRight className="size-3.5" />
                 </a>
@@ -30,7 +30,7 @@ export function Projects() {
                   href={project.href}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="underline decoration-transparent underline-offset-4 transition-colors hover:decoration-current"
+                  className="underline decoration-transparent underline-offset-4 transition-colors duration-150 ease-out-expo hover:decoration-current"
                 >
                   {project.title}
                 </a>

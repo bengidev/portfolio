@@ -18,7 +18,7 @@ export function Connect() {
                 href={link.href}
                 target={external ? '_blank' : undefined}
                 rel={external ? 'noreferrer noopener me' : undefined}
-                className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-3.5 py-1.5 text-sm text-foreground shadow-xs transition-[background-color,transform] duration-200 hover:-translate-y-px hover:bg-accent"
+                className="pressable inline-flex items-center gap-2 rounded-md border border-border bg-card px-3.5 py-1.5 text-sm text-foreground shadow-xs hover:border-foreground/25 hover:bg-accent"
               >
                 <SocialIcon name={link.key} className="size-3.5" aria-hidden />
                 {link.label}
