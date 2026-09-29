@@ -29,6 +29,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Refresh GitHub data
+        # GITHUB_TOKEN is a repository secret. It is used only here, at build
+        # time, and is never present in the deployed bundle. If it is not set
+        # the fetch scripts warn and keep the previously committed data.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          node scripts/fetch-github.mjs
+          node scripts/fetch-contributions.mjs
+
       - name: Type-check
         run: npm run check-types
 

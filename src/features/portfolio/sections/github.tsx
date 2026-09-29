@@ -1,56 +1,208 @@
-import { GitFork, Star, Users } from 'lucide-react'
+import { useMemo } from 'react'
 
-import github from '@/data/github.json'
 import { Panel, PanelContent, PanelHeader, PanelTitle } from '@/components/panel'
-import { site } from '@/data/site'
+import { cn } from '@/lib/utils'
 
 /**
- * Public GitHub counters, baked in at build time by `scripts/fetch-github.mjs`.
+ * The year-long contribution calendar.
  *
- * These replace the contribution *calendar* the original design used: that
- * grid is only available through an authenticated GraphQL call, which a static
- * site cannot make without shipping a token. The numbers here come from the
- * unauthenticated REST API and are accurate as of `github.json`'s `fetchedAt`.
+ * Data comes from `src/data/contributions.json`, generated at build time by
+ * `scripts/fetch-contributions.mjs`. That file is the only place real
+ * contribution counts live; this component has no fetching of its own, so it
+ * renders identically on the server and the client and never leaks a token.
+ *
+ * The grid is laid out column-per-week (CSS `grid-flow-col` over 7 rows), the
+ * same axis GitHub's own profile uses, so a column is one week and a row is a
+ * day of the week.
  */
-export function GitHubPanel() {
-  const handle = site.handle
-  const href = `https://github.com/${handle}`
 
-  const stats = [
-    { icon: GitFork, label: 'Repositories', value: github.publicRepos },
-    { icon: Users, label: 'Followers', value: github.followers },
-    { icon: Star, label: 'Following', value: github.following },
-  ]
+interface Day {
+  contributionCount: number
+  date: string
+}
+
+interface Contributions {
+  login: string
+  totalContributions: number
+  firstDate: string | null
+  lastDate: string | null
+  weeks: { firstDay: string; days: Day[] }[]
+  fetchedAt: string
+}
+
+import contributions from '@/data/contributions.json'
+
+const LEVELS = [
+  'bg-chart-1', // 0
+  'bg-chart-2', // 1–4
+  'bg-chart-3', // 5–9
+  'bg-chart-4', // 10–19
+  'bg-chart-5', // 20+
+]
+
+/** Bucket a day's count into the five-step ramp. */
+function levelOf(count: number) {
+  if (count === 0) return 0
+  if (count < 5) return 1
+  if (count < 10) return 2
+  if (count < 20) return 3
+  return 4
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', '']
+
+/** "28 Sep 2025" */
+function formatDate(iso: string | null) {
+  if (!iso) return '—'
+  const d = new Date(`${iso}T00:00:00Z`)
+  if (Number.isNaN(d.getTime())) return iso
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`
+}
+
+export function GitHubPanel() {
+  const data = contributions as unknown as Contributions
+
+  const { weeks, monthLabels } = useMemo(() => {
+    const source = data.weeks
+    const labels: { index: number; text: string }[] = []
+    if (!source.length) return { weeks: source, monthLabels: labels }
+
+    // Label a month at the first column whose week contains its 1st or later,
+    // skipping a label that would collide with the previous one.
+    let lastMonth = -1
+    let lastIndex = -Infinity
+
+    source.forEach((week, index) => {
+      const first = week.days[0]
+      if (!first) return
+      const month = new Date(`${first.date}T00:00:00Z`).getUTCMonth()
+      if (month !== lastMonth && index - lastIndex >= 3) {
+        labels.push({ index, text: MONTHS[month] })
+        lastMonth = month
+        lastIndex = index
+      }
+    })
+
+    return { weeks: source, monthLabels: labels }
+  }, [data.weeks])
+
+  const hasData = weeks.length > 0
 
   return (
     <Panel>
       <PanelHeader>
         <PanelTitle>GitHub</PanelTitle>
         <a
-          href={href}
+          href={`https://github.com/${data.login}`}
           target="_blank"
           rel="noreferrer noopener me"
           className="ml-auto text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
-          @{github.login} →
+          @{data.login} →
         </a>
       </PanelHeader>
 
       <PanelContent>
-        {github.bio && <p className="mb-3 text-sm text-muted-foreground">{github.bio}</p>}
+        {hasData ? (
+          <div className="overflow-x-auto pb-1">
+            <div className="min-w-max">
+              {/* Month labels, positioned over the column each month starts in. */}
+              <div className="relative mb-2 ml-9 h-4" aria-hidden>
+                {monthLabels.map((label) => (
+                  <span
+                    key={`${label.text}-${label.index}`}
+                    className="absolute text-xs text-muted-foreground"
+                    style={{ left: `calc(${label.index} * 13px + ${label.index} * 3px)` }}
+                  >
+                    {label.text}
+                  </span>
+                ))}
+              </div>
 
-        <dl className="grid grid-cols-3 gap-4">
-          {stats.map(({ icon: Icon, label, value }) => (
-            <div key={label}>
-              <dt className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                <Icon className="size-3.5 shrink-0" aria-hidden />
-                {label}
-              </dt>
-              <dd className="mt-0.5 text-xl font-medium tabular">{value.toLocaleString()}</dd>
+              <div className="flex gap-2">
+                {/* Day-of-week labels down the left edge. */}
+                <div className="grid w-7 shrink-0 grid-rows-7 gap-[3px]" aria-hidden>
+                  {DAY_LABELS.map((label, i) => (
+                    <span key={i} className="text-xs leading-none text-muted-foreground">
+                      {label}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="grid grid-flow-col grid-rows-7 gap-[3px]">
+                  {weeks.flatMap((week, wi) =>
+                    week.days.map((day) => (
+                      <div
+                        key={`${day.date}-${wi}`}
+                        title={`${day.contributionCount} contribution${
+                          day.contributionCount === 1 ? '' : 's'
+                        } on ${day.date}`}
+                        className={cn(
+                          'size-2.5 rounded-[2px]',
+                          LEVELS[levelOf(day.contributionCount)],
+                        )}
+                      />
+                    )),
+                  )}
+                </div>
+              </div>
             </div>
-          ))}
-        </dl>
+
+            {/* Caption and legend. */}
+            <div className="mt-4 flex flex-wrap items-end justify-between gap-x-6 gap-y-2 text-sm">
+              <p className="text-muted-foreground">
+                Fig. 2.{' '}
+                <span className="text-foreground tabular">
+                  {data.totalContributions.toLocaleString()} contributions
+                </span>
+                , {formatDate(data.firstDate)} – {formatDate(data.lastDate)}. Source:{' '}
+                <a
+                  href={`https://github.com/${data.login}`}
+                  target="_blank"
+                  rel="noreferrer noopener me"
+                  className="link-underline"
+                >
+                  GitHub
+                </a>
+                .
+              </p>
+
+              <p className="flex items-center gap-1.5 text-muted-foreground" aria-hidden>
+                Less
+                {LEVELS.map((level, i) => (
+                  <span key={i} className={cn('size-2.5 rounded-[2px]', level)} />
+                ))}
+                More
+              </p>
+            </div>
+          </div>
+        ) : (
+          <EmptyCalendar login={data.login} />
+        )}
       </PanelContent>
     </Panel>
+  )
+}
+
+function EmptyCalendar({ login }: { login: string }) {
+  return (
+    <div className="text-sm text-muted-foreground">
+      <p>
+        The contribution calendar needs a{' '}
+        <code className="font-mono text-xs">GITHUB_TOKEN</code> secret with{' '}
+        <code className="font-mono text-xs">read:user</code> scope in the repository, then a
+        rebuild. Add it under{' '}
+        <em>Settings → Secrets and variables → Actions</em> and push.
+      </p>
+      <a
+        href={`https://github.com/${login}`}
+        target="_blank"
+        rel="noreferrer noopener me"
+        className="link-underline mt-2 inline-block"
+      >
+        View @{login} on GitHub instead →
+      </a>
+    </div>
   )
 }
