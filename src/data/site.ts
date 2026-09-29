@@ -1,9 +1,23 @@
 /**
- * ─────────────────────────────────────────────────────────────────────────────
+ * ────────────────────────────────────────���────────────────────
  * IDENTITY — edit this file first.
  * Everything else on the site reads from here.
  * ─────────────────────────────────────────────────────────────────────────────
  */
+
+/**
+ * Resolve a file in `public/` to a URL the deployed site can actually fetch.
+ *
+ * GitHub Pages serves this site from a subpath (`/portfolio/`), so a plain
+ * `/avatar.png` asks the domain root for a file that is not there and 404s.
+ * The base is normalised so a `VITE_BASE_PATH` override works whether or not
+ * it carries a trailing slash.
+ */
+const BASE = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`
+
+const asset = (path: string) => `${BASE}${path}`
 
 export const site = {
   /**
@@ -42,16 +56,15 @@ export const site = {
   url: 'https://bengidev.github.io/portfolio/',
 
   /**
-   * Portrait, shown in a circle in the hero. Put the file in `public/`.
+   * Portrait, shown in the card beside the name. Put the file in `public/`.
    *
    * The image is black ink on a near-white ground, so dark mode applies a CSS
    * `invert()` — the ink turns white and the background dissolves into the
-   * page. Because of that, one file serves both themes; set both paths to the
-   * same asset. If you ever swap in a genuinely different dark-mode image,
-   * drop the `dark:invert` class in `profile-header.tsx`.
+   * page. One file therefore serves both themes; if you ever swap in a
+   * genuinely different dark-mode image, drop the `dark:invert` class in
+   * `profile.tsx` and point this at the other file.
    */
-  avatarLight: '/avatar.png',
-  avatarDark: '/avatar.png',
+  avatar: asset('avatar.png'),
 } as const
 
 /**

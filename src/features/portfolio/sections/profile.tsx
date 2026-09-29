@@ -40,7 +40,7 @@ export function Profile() {
       <div className="w-[38%] shrink-0 sm:size-32">
         <div className="aspect-square w-full rounded-xl border border-border p-1 transition duration-300 hover:brightness-90">
           <img
-            src={site.avatarLight}
+            src={site.avatar}
             alt={`${site.name}'s portrait`}
             className="size-full rounded-lg object-cover dark:invert"
             width={512}
