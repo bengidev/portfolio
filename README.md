@@ -79,7 +79,7 @@ Routes live in `src/App.tsx`; navigation items live in `NAV` in
 ## Deploying to GitHub Pages
 
 The workflow in `.github/workflows/deploy.yml` builds and publishes on every
-push to `master` (or `main`).
+push to `main`.
 
 **One-time setup** — in the repo: *Settings → Pages → Build and deployment →
 Source: **GitHub Actions***.
