@@ -1,47 +1,48 @@
-import { Separator } from '@/components/panel'
+import { DotField, HatchDivider } from '@/components/section'
 import { About } from '@/features/portfolio/sections/about'
+import { Connect } from '@/features/portfolio/sections/connect'
 import { Education } from '@/features/portfolio/sections/education'
-import { Experiences } from '@/features/portfolio/sections/experiences'
-import { GitHubPanel } from '@/features/portfolio/sections/github'
-import { Overview } from '@/features/portfolio/sections/overview'
-import { ProfileHeader } from '@/features/portfolio/sections/profile-header'
+import { Experience } from '@/features/portfolio/sections/experience'
+import { GitHubActivity } from '@/features/portfolio/sections/github'
+import { Profile } from '@/features/portfolio/sections/profile'
 import { Projects } from '@/features/portfolio/sections/projects'
-import { Recognition } from '@/features/portfolio/sections/recognition'
-import { SocialLinks } from '@/features/portfolio/sections/social-links'
-import { TechStack } from '@/features/portfolio/sections/tech-stack'
+import { Stack } from '@/features/portfolio/sections/stack'
 
 /**
- * The home page is one narrow column of stacked panels separated by hatched
- * gutters. To add, remove, or reorder a section, edit this list — nothing else
- * needs to change.
+ * The whole site is this one page.
+ *
+ * Sections are full-bleed bands separated by hairlines, with a diagonal
+ * hatch between the major groups. To add, remove, or reorder one, edit this
+ * list and add a matching entry to `src/data/sections.ts` so the command
+ * palette and the header's "More" menu stay in step.
  */
 export function Home() {
   return (
-    <main className="mx-auto max-w-3xl">
-      <ProfileHeader />
-      <Separator />
+    <main className="max-w-screen overflow-x-hidden px-2">
+      <div className="mx-auto max-w-3xl">
+        {/* Banner of printed dots, closing the top of the composition. */}
+        <div className="screen-line-before screen-line-after edge-frame overflow-hidden p-5">
+          <DotField className="h-[70px] w-full sm:h-[110px]" />
+        </div>
 
-      <SocialLinks />
-      <Overview />
-      <GitHubPanel />
-      <Separator />
+        <Profile />
+        <HatchDivider />
 
-      <About />
-      <Separator />
+        <About />
+        <HatchDivider />
 
-      <TechStack />
-      <Separator />
+        <Connect />
+        <GitHubActivity />
+        <HatchDivider />
 
-      <Experiences />
-      <Separator />
+        <Experience />
+        <Education />
+        <HatchDivider />
 
-      <Education />
-      <Separator />
-
-      <Projects />
-      <Separator />
-
-      <Recognition />
+        <Stack />
+        <Projects />
+        <HatchDivider />
+      </div>
     </main>
   )
 }
