@@ -65,10 +65,13 @@ export function Entry({
                     aria-expanded={open}
                     aria-controls={bodyId}
                     aria-label={open ? `Hide details` : `Show details`}
-                    className="ml-auto shrink-0 rounded p-1 text-muted-foreground transition-colors hover:text-foreground"
+                    className="pressable ml-auto shrink-0 rounded p-1 text-muted-foreground hover:text-foreground"
                   >
                     <ChevronDown
-                      className={cn('size-4 transition-transform duration-300', open && 'rotate-180')}
+                      className={cn(
+                        'size-4 transition-transform duration-200 ease-out-expo motion-reduce:transition-none',
+                        open && 'rotate-180',
+                      )}
                       aria-hidden
                     />
                   </button>
@@ -94,9 +97,14 @@ export function Entry({
             </ul>
           )}
 
-          {expandable && open && (
-            <div id={bodyId} className="mt-3 space-y-1.5 pl-1">
-              {children}
+          {expandable && (
+            // Always mounted: the height tween needs the content in the
+            // DOM to have something to measure. `inert` keeps the collapsed
+            // lines out of the tab order while they are invisible.
+            <div id={bodyId} data-open={open || undefined} className="disclose" inert={!open}>
+              <div className="min-h-0 overflow-hidden">
+                <div className="space-y-1.5 pt-3 pl-1">{children}</div>
+              </div>
             </div>
           )}
         </div>
