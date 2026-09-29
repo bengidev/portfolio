@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { BtrdMark } from '@/features/portfolio/sections/wordmark'
 import { flipSentences, site } from '@/data/site'
 import { cn } from '@/lib/utils'
 
@@ -13,8 +14,10 @@ import { cn } from '@/lib/utils'
 export function ProfileHeader() {
   return (
     <div className="screen-line-bottom screen-line-bottom-border grid grid-cols-[auto_1fr] grid-rows-[1fr_auto] overflow-y-clip border-x">
-      <figure className="relative col-span-2 p-2 sm:col-span-1 sm:col-start-2 sm:p-4">
-        <ProfileMark />
+      <figure className="relative col-span-2 flex items-center justify-center p-6 sm:col-span-1 sm:col-start-2 sm:p-10">
+        {/* `size-full` + the SVG's own preserveAspectRatio keeps the wordmark
+            inside the plate at any width, instead of overflowing it. */}
+        <BtrdMark className="max-h-64 w-full sm:max-h-80" />
         <figcaption className="pointer-events-none absolute right-2 bottom-2 text-sm/none tracking-wide text-muted-foreground/60 tabular select-none sm:right-4 sm:bottom-4">
           @{site.handle}
         </figcaption>
@@ -41,74 +44,6 @@ export function ProfileHeader() {
           <FlipSentences />
         </div>
       </div>
-    </div>
-  )
-}
-
-/**
- * The large plate in the hero.
- *
- * Drawn as a self-contained SVG that inherits `currentColor`, so it themes
- * itself and scales to the column. Replace this with your own mark, or drop an
- * <img> in its place.
- */
-function ProfileMark() {
-  return (
-    <div className="text-muted-foreground flex aspect-4/3 w-full items-center justify-center sm:aspect-square">
-      <svg
-        viewBox="0 0 200 200"
-        fill="none"
-        className="h-full max-h-full w-auto"
-        role="img"
-        aria-label="Personal mark"
-      >
-        {/* Hairline frame, echoing the rules that run through the page. */}
-        <rect
-          x="24.5"
-          y="24.5"
-          width="151"
-          height="151"
-          rx="4"
-          stroke="currentColor"
-          strokeOpacity="0.25"
-        />
-        <rect
-          x="40.5"
-          y="40.5"
-          width="119"
-          height="119"
-          rx="4"
-          stroke="currentColor"
-          strokeOpacity="0.15"
-          strokeDasharray="3 4"
-        />
-
-        {/* Stacked chevrons — a simple "built, not assembled" motif. */}
-        <path
-          d="M66 118 100 84l34 34"
-          stroke="currentColor"
-          strokeWidth="6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M66 140 100 106l34 34"
-          stroke="currentColor"
-          strokeWidth="6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeOpacity="0.45"
-        />
-
-        {/* Centre point, with tick marks radiating to the frame. */}
-        <circle cx="100" cy="100" r="3.5" fill="currentColor" />
-        <path
-          d="M100 40v14M100 146v14M40 100h14M146 100h14"
-          stroke="currentColor"
-          strokeOpacity="0.35"
-          strokeLinecap="round"
-        />
-      </svg>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 import { ThemeToggle } from '@/components/theme-toggle'
 import { site } from '@/data/site'
@@ -9,18 +9,13 @@ const NAV = [
   { to: '/projects', label: 'Projects' },
 ]
 
-/** Sticky top bar. Hidden on the home page, which is a single uninterrupted column. */
+/**
+ * Sticky top bar. Rendered on every page so the theme switch is always
+ * reachable — including on the home page.
+ */
 export function SiteHeader() {
-  const { pathname } = useLocation()
-  const isHome = pathname === '/'
-
   return (
-    <header
-      className={cn(
-        'sticky top-0 z-50 border-b border-line bg-background/85 backdrop-blur-sm',
-        isHome && 'hidden',
-      )}
-    >
+    <header className="sticky top-0 z-50 border-b border-line bg-background/85 backdrop-blur-sm">
       <div className="mx-auto flex h-12 max-w-3xl items-center gap-4 px-4">
         <Link to="/" className="text-sm font-semibold tracking-tight">
           {site.displayName}
