@@ -34,10 +34,10 @@ export const site = {
   phoneHref: '+6289669066999',
 
   /** Shown under the name in the hero. */
-  tagline: 'Software engineer building thoughtful, precise things for the web.',
+  tagline: 'Software engineer building for the web and for mobile.',
   /** One-line description for meta tags and link previews. */
   description:
-    'Bambang Tri Rahmat Doni — software engineer based in Indonesia. Selected work, experience, and what I have been building.',
+    'Bambang Tri Rahmat Doni — software engineer based in Indonesia, working across web, React Native, Flutter, and native iOS and Android. Selected work and experience.',
   /** Where the site is published once deployed. */
   url: 'https://bengidev.github.io/portfolio/',
 
@@ -98,6 +98,7 @@ export const followTarget: SocialKey = 'github'
 export const flipSentences: string[] = [
   'Software Engineer',
   'Based in Indonesia',
-  'Building for the web',
+  'Web, iOS and Android',
+  'React Native, Flutter, native',
   'Open to interesting work',
 ]

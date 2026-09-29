@@ -6,9 +6,9 @@ import { site } from '@/data/site'
  * Replace these with your own copy.
  */
 export const about: string[] = [
-  'I’m a software engineer based in Indonesia, focused on building clear, dependable products for the web.',
-  'Most of my work sits at the seam between design and engineering — turning a Figma file into an interface that holds up in production.',
-  'I care about the small things: focus states, empty states, the 40ms a tooltip takes to appear.',
+  'I’m a software engineer based in Indonesia, working across the web and mobile — React and TypeScript in the browser, React Native and Flutter across both platforms, and Swift and Kotlin when a job wants the real thing.',
+  'Most of my work sits at the seam between design and engineering — turning a Figma file into an interface that holds up in production, whether it ships to a browser, the App Store, or Google Play.',
+  'I care about the small things: focus states, empty states, the 40ms a tooltip takes to appear, and the 16ms a list takes to settle under a thumb.',
 ]
 
 /** Rows in the overview strip, below the role line. */

@@ -21,6 +21,19 @@ export const stack: StackGroup[] = [
     ],
   },
   {
+    title: 'Mobile',
+    items: [
+      { name: 'React Native', href: 'https://reactnative.dev' },
+      { name: 'Expo', href: 'https://expo.dev' },
+      { name: 'Flutter', href: 'https://flutter.dev' },
+      { name: 'Dart', href: 'https://dart.dev' },
+      { name: 'Swift', href: 'https://developer.apple.com/swift' },
+      { name: 'SwiftUI', href: 'https://developer.apple.com/xcode/swiftui' },
+      { name: 'Kotlin', href: 'https://kotlinlang.org' },
+      { name: 'Jetpack Compose', href: 'https://developer.android.com/jetpack/compose' },
+    ],
+  },
+  {
     title: 'Backend',
     items: [
       { name: 'Node.js', href: 'https://nodejs.org' },
