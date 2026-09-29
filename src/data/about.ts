@@ -1,25 +1,20 @@
+import { site } from '@/data/site'
+
 /**
  * "About" panel — the bullet list under the hero.
  * Plain strings; anything wrapped in *asterisks* renders as bold.
+ * Replace these with your own copy.
  */
 export const about: string[] = [
-  'I’m a design engineer with a bias toward pixel-perfect execution and obsessive attention to detail.',
-  'Most of my work lives at the seam between design and engineering — turning a Figma file into a component library that survives contact with production.',
+  'I’m a software engineer based in Indonesia, focused on building clear, dependable products for the web.',
+  'Most of my work sits at the seam between design and engineering — turning a Figma file into an interface that holds up in production.',
   'I care about the small things: focus states, empty states, the 40ms a tooltip takes to appear.',
 ]
 
-/** Short line shown in the Overview panel next to the role. */
-export const overviewRole = 'Design Engineer @Your Company'
-
-/** Shown in the "overview" strip — local time, availability, etc. */
-export interface OverviewFact {
-  label: string
-  value: string
-  href?: string
-}
-
-export const overviewFacts: OverviewFact[] = [
-  { label: 'Location', value: 'Your City' },
-  { label: 'Focus', value: 'Design engineering, front-end architecture' },
-  { label: 'Status', value: 'Open to interesting work' },
+/** Rows in the overview strip, below the role line. */
+export const overviewFacts: { label: string; value: string; href?: string }[] = [
+  { label: 'Location', value: site.location },
+  { label: 'Timezone', value: site.timezoneLabel },
+  { label: 'Email', value: site.email, href: `mailto:${site.email}` },
+  { label: 'Phone', value: site.phone, href: `tel:${site.phoneHref}` },
 ]

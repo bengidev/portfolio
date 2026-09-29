@@ -1,35 +1,36 @@
 import { Panel } from '@/components/panel'
-import { overviewFacts, overviewRole } from '@/data/about'
+import { overviewFacts } from '@/data/about'
 import { site } from '@/data/site'
+import { useLocalTime } from '@/hooks/use-local-time'
 
 /**
- * A short strip of facts sitting under the social row: where you are, what you
- * do, whether you're available. Static text — no API calls.
+ * A short strip of facts sitting under the social row: where you are, your
+ * timezone, and how to reach you. All static text apart from the clock.
  */
 export function Overview() {
+  const localTime = useLocalTime(site.timezone)
+
   return (
     <Panel className="px-4 py-3">
       <p className="text-base text-balance">
         <span className="text-muted-foreground">Overview</span>
         <span className="mx-2 text-border">/</span>
-        {overviewRole.split('@').map((part, i) =>
-          i === 0 ? (
-            <span key={part}>{part}@</span>
-          ) : (
-            <span key={part} className="font-medium">
-              {part}
-            </span>
-          ),
+        <span>{site.role}</span>
+        {site.company && (
+          <>
+            <span className="text-muted-foreground"> @ </span>
+            <span className="font-medium">{site.company}</span>
+          </>
         )}
       </p>
 
-      <dl className="mt-2 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-3">
+      <dl className="mt-2 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
         {overviewFacts.map((fact) => (
           <div key={fact.label} className="flex gap-2">
-            <dt className="text-muted-foreground">{fact.label}</dt>
+            <dt className="shrink-0 text-muted-foreground">{fact.label}</dt>
             <dd className="truncate">
               {fact.href ? (
-                <a className="link-underline" href={fact.href} target="_blank" rel="noreferrer">
+                <a className="link-underline" href={fact.href}>
                   {fact.value}
                 </a>
               ) : (
@@ -40,8 +41,8 @@ export function Overview() {
         ))}
       </dl>
 
-      <p className="mt-2 text-sm text-muted-foreground/70">
-        {site.location}
+      <p className="mt-2 text-sm text-muted-foreground/70 tabular">
+        Local time {localTime} ({site.timezoneLabel})
       </p>
     </Panel>
   )

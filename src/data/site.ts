@@ -6,32 +6,44 @@
  */
 
 export const site = {
-  /** Shown in the header, the <title>, and structured data. */
-  name: 'Your Name',
-  /** Short handle, e.g. "bengidev". Used for the GitHub panel. */
-  handle: 'your-handle',
-  /** Rendered under the name in the hero. */
-  tagline: 'Design engineer building thoughtful, pixel-precise things for the web.',
+  /** Full name. Used in the hero, the footer, and meta tags. */
+  name: 'Bambang Tri Rahmat Doni',
+  /** Short handle. Used for the GitHub panel and as the default monogram. */
+  handle: 'bengidev',
+
+  /** Current role, shown in the overview strip. */
+  role: 'Software Engineer',
+  company: 'Your Company',
+
+  location: 'Indonesia',
+  /** UTC offset, used to show local time. Indonesia is GMT+7 (WIB). */
+  timezone: 'Asia/Jakarta',
+  timezoneLabel: 'GMT+7',
+
+  email: 'bambang.trd17@gmail.com',
+  phone: '+62 896 6906 6999',
+  /** Digits only, for a tel: link. */
+  phoneHref: '+6289669066999',
+
+  /** Shown under the name in the hero. */
+  tagline: 'Software engineer building thoughtful, precise things for the web.',
   /** One-line description for meta tags and link previews. */
   description:
-    'Personal portfolio — design engineer, open source, and selected work.',
-  /** Shown in the footer. */
-  location: 'Based in Your City',
+    'Bambang Tri Rahmat Doni — software engineer based in Indonesia. Selected work, experience, and what I have been building.',
   /** Where the site is published once deployed. */
-  url: 'https://your-handle.github.io/portfolio/',
+  url: 'https://bengidev.github.io/portfolio/',
 
   /**
-   * Images live in `public/`. Replace these two files with your own — the light
-   * variant is shown in light mode, the dark variant in dark mode.
-   *  - public/avatar-light.(webp|png|jpg)
-   *  - public/avatar-dark.(webp|png|jpg)
-   * Dropping in a single image and pointing both keys at it also works.
+   * Portrait, shown in a circle in the hero. Put the file in `public/`.
+   *
+   * The image is black ink on a near-white ground, so dark mode applies a CSS
+   * `invert()` — the ink turns white and the background dissolves into the
+   * page. Because of that, one file serves both themes; set both paths to the
+   * same asset. If you ever swap in a genuinely different dark-mode image,
+   * drop the `dark:invert` class in `profile-header.tsx`.
    */
-  avatarLight: '/avatar-light.webp',
-  avatarDark: '/avatar-dark.webp',
-
-  /** Optional. Shown next to the name when true. */
-  verified: false,
+  avatarLight: '/avatar.png',
+  avatarDark: '/avatar.png',
 } as const
 
 /**
@@ -39,8 +51,8 @@ export const site = {
  * `src/components/social-icon.tsx` (X, GitHub, LinkedIn, Discord, YouTube,
  * Bluesky, Instagram, Dribbble, Email).
  *
- * The first entry is treated as the "primary" link by the follow button.
- * Set `followTarget` to override which one the "follow me" button points at.
+ * Only real accounts are listed here — add more by copying an entry and filling
+ * in your handle. `followTarget` picks which one the "follow me" link uses.
  */
 export type SocialKey =
   | 'x'
@@ -62,23 +74,22 @@ export interface SocialLink {
 }
 
 export const socialLinks: SocialLink[] = [
-  { key: 'x', label: 'X', href: 'https://x.com/your-handle' },
-  { key: 'github', label: 'GitHub', href: 'https://github.com/your-handle' },
-  { key: 'linkedin', label: 'LinkedIn', href: 'https://linkedin.com/in/your-handle' },
-  { key: 'discord', label: 'Discord', href: 'https://discord.com/users/your-id' },
-  { key: 'youtube', label: 'YouTube', href: 'https://youtube.com/@your-handle' },
+  { key: 'github', label: 'GitHub', href: 'https://github.com/bengidev', handle: '@bengidev' },
+  { key: 'email', label: 'Email', href: `mailto:${site.email}`, handle: site.email },
+  // { key: 'linkedin', label: 'LinkedIn', href: 'https://linkedin.com/in/your-handle' },
+  // { key: 'x', label: 'X', href: 'https://x.com/your-handle' },
 ]
 
 /** Which link the "follow me" button in the social panel points at. */
-export const followTarget: SocialKey = 'x'
+export const followTarget: SocialKey = 'github'
 
 /**
  * Rotating lines shown under the name in the hero. Add or remove freely —
  * the list loops on an interval.
  */
 export const flipSentences: string[] = [
-  'Design engineer',
-  'Open source maintainer',
-  'Writing about the web',
-  'Building in public',
+  'Software Engineer',
+  'Based in Indonesia',
+  'Building for the web',
+  'Open to interesting work',
 ]

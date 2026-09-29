@@ -29,19 +29,10 @@ export function ProfileHeader() {
 
       <div className="flex flex-col">
         <div className="z-1 mt-auto border-t border-line">
-          <div className="flex -translate-x-px items-center gap-2 pl-4">
-            <h1 className="-translate-y-px text-[2rem]/none font-medium tracking-tight">
+          <div className="flex -translate-x-px items-baseline gap-2 pl-4">
+            <h1 className="-translate-y-px text-[1.75rem]/none font-medium tracking-tight sm:text-[2rem]/none">
               {site.name}
             </h1>
-            {site.verified && (
-              <span
-                className="text-link flex size-4.5 select-none items-center justify-center rounded-full text-xs font-bold text-white"
-                aria-label="Verified"
-                title="Verified"
-              >
-                ✓
-              </span>
-            )}
           </div>
           <FlipSentences />
         </div>
@@ -147,16 +138,16 @@ function Avatar({ className }: { className?: string }) {
         className="block size-full object-cover select-none dark:hidden"
         src={site.avatarLight}
         alt={`${site.name} portrait`}
-        width={160}
-        height={160}
+        width={512}
+        height={512}
         onError={() => setBroken(true)}
       />
       <img
-        className="hidden size-full object-cover select-none dark:block"
+        className="hidden size-full object-cover select-none dark:block dark:invert"
         src={site.avatarDark}
         alt=""
-        width={160}
-        height={160}
+        width={512}
+        height={512}
         onError={() => setBroken(true)}
       />
       <div className="pointer-events-none absolute inset-0 rounded-[inherit] inset-ring-1 inset-ring-foreground/30 dark:inset-ring-foreground/10" />

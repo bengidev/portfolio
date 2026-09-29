@@ -2,7 +2,7 @@ import { Separator } from '@/components/panel'
 import { About } from '@/features/portfolio/sections/about'
 import { Education } from '@/features/portfolio/sections/education'
 import { Experiences } from '@/features/portfolio/sections/experiences'
-import { GitHubContributions } from '@/features/portfolio/sections/github-contributions'
+import { GitHubPanel } from '@/features/portfolio/sections/github'
 import { Overview } from '@/features/portfolio/sections/overview'
 import { ProfileHeader } from '@/features/portfolio/sections/profile-header'
 import { Projects } from '@/features/portfolio/sections/projects'
@@ -23,7 +23,7 @@ export function Home() {
 
       <SocialLinks />
       <Overview />
-      <GitHubContributions />
+      <GitHubPanel />
       <Separator />
 
       <About />
