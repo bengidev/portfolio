@@ -127,6 +127,19 @@
 
   /* The single column every section is measured against. */
   --container-page: 48rem;
+
+  /* ---------------------------------------------------------------- *
+   * Motion
+   *
+   * The built-in easings are too weak to read as intentional, so the
+   * two curves the whole site uses live here. `out` is for anything
+   * entering or responding to a press; `in-out` is for travel across
+   * the screen, where the acceleration should be visible at both ends.
+   * Never use an ease-in: it delays the first pixels, which is exactly
+   * where the user is watching.
+   * ---------------------------------------------------------------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
 @layer base {
@@ -236,6 +249,21 @@
   @apply font-pixel text-2xl font-semibold sm:text-3xl;
 }
 
+/* Reduced motion: fewer and gentler, not zero. Colour and opacity stay
+   so state changes are still legible; travel, scale, and rotation go. */
+@media (prefers-reduced-motion: reduce) {
+  .disclose,
+  .disclose > * > * > * {
+    transition: none;
+    translate: none;
+  }
+
+  .animate-flip-in,
+  .animate-pulse {
+    animation: none;
+  }
+}
+
 /**
  * Entry animation for the rotating line under the name. Each change swaps
  * the element's `key`, which restarts the animation.
@@ -259,4 +287,111 @@
 
 @utility tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ *
+ * Motion primitives
+ * ------------------------------------------------------------------ */
+
+/**
+ * Press feedback for anything the user can push. A pressable dips a
+ * little under the pointer so the interface confirms it heard them —
+ * this is the cheapest feedback in the whole system and the one people
+ * notice most when it is missing.
+ *
+ * The properties are named rather than `all`, and the dip is dropped
+ * under `prefers-reduced-motion`, where the colour change carries the
+ * feedback on its own.
+ */
+@utility pressable {
+  transition-property: scale, color, background-color, border-color, text-decoration-color, opacity;
+  transition-duration: 160ms;
+  transition-timing-function: var(--ease-out-expo);
+
+  @media (prefers-reduced-motion: no-preference) {
+    &:active {
+      scale: 0.97;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition-property: color, background-color, border-color, text-decoration-color, opacity;
+  }
+}
+
+/**
+ * A plain fade, for anything the user summons dozens of times a day.
+ *
+ * The command palette is opened with ⌘K on every search, so it gets the
+ * shortest entrance available — no scale, no travel, nothing to wait
+ * for. `@starting-style` runs the fade on insertion, so it costs no
+ * JavaScript and no extra render pass.
+ *
+ * Named `enter-fade` rather than `fade-in` because tw-animate-css already
+ * claims that one.
+ */
+@utility enter-fade {
+  opacity: 1;
+  transition: opacity 100ms linear;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+/**
+ * Expands and collapses without measuring anything in JavaScript.
+ *
+ * The wrapper is a grid whose one row animates from `0fr` to `1fr`; the
+ * child clips the overflow. The timing is deliberately asymmetric —
+ * opening eases out over 260ms so the content arrives, closing takes
+ * 140ms so dismissing never feels like it is waiting on you. The same
+ * trick makes it interruptible: mid-open, a click retargets the
+ * transition from wherever it is rather than restarting it.
+ *
+ * Named `disclose` rather than `collapse` because Tailwind already has a
+ * `collapse` — it is `visibility: collapse`, and the two together hide
+ * the body you are trying to reveal.
+ */
+@utility disclose {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 140ms var(--ease-out-expo),
+    opacity 140ms var(--ease-out-expo);
+
+  /* Each line inside arrives a beat after the one above it. The delays
+     only exist while open, so closing stays a single quick tween. */
+  > * > * > * {
+    opacity: 0;
+    translate: 0 -4px;
+    transition:
+      opacity 180ms var(--ease-out-expo),
+      translate 180ms var(--ease-out-expo);
+  }
+
+  &[data-open] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    transition-duration: 260ms;
+
+    > * > * > * {
+      opacity: 1;
+      translate: none;
+    }
+
+    > * > * > *:nth-child(2) {
+      transition-delay: 45ms;
+    }
+
+    > * > * > *:nth-child(3) {
+      transition-delay: 90ms;
+    }
+
+    /* Cap the cascade so a long entry does not take a second to land. */
+    > * > * > *:nth-child(n + 4) {
+      transition-delay: 120ms;
+    }
+  }
 }
